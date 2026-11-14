@@ -45,3 +45,13 @@ Python, PyTorch, OpenCV, MediaPipe, scikit-learn, NumPy, Matplotlib
 Grad-CAM on the CNN's last conv block shows which face regions drive each prediction (red = most influential).
 
 ![gradcam](models/gradcam.png)
+
+## Ensemble ablation (CNN + MLP)
+Averaged class probabilities, `w * CNN + (1 - w) * MLP`, with `w` chosen on the validation set (best w = 0.8).
+
+| Test subset | CNN | MLP | Ensemble |
+|---|---|---|---|
+| Faces detected by MediaPipe (4926) | 64.7% / F1 0.593 | 56.8% / F1 0.498 | 65.0% / F1 0.595 |
+| All 5384 images (CNN fallback when no face) | 63.7% / F1 0.591 | n/a | 64.0% / F1 0.592 |
+
+The gain is about 0.3 points, within the noise of a ~5k-image test set, so the ensemble is **not meaningfully better** than the CNN alone. The validation search gave the CNN most of the weight, which suggests the landmark geometry adds little beyond what the CNN already learns. The live demo therefore uses the CNN only.
