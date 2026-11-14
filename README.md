@@ -40,3 +40,8 @@ python src/live_santa.py       # q = quit, s = save photo
 
 ## Stack
 Python, PyTorch, OpenCV, MediaPipe, scikit-learn, NumPy, Matplotlib
+
+## Explainability (Grad-CAM)
+Grad-CAM on the CNN's last conv block shows which face regions drive each prediction (red = most influential).
+
+![gradcam](models/gradcam.png)
