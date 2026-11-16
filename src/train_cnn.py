@@ -10,7 +10,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-SEED, EPOCHS, PATIENCE, BS, LR = 42, 30, 6, 64, 1e-3
+SEED, EPOCHS, PATIENCE, BS, LR = 42, 50, 8, 64, 1e-3
 random.seed(SEED); np.random.seed(SEED); torch.manual_seed(SEED)
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 

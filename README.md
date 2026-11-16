@@ -11,8 +11,10 @@ Data: FER2013 train + test pooled, then **stratified 70/15/15** split (so number
 
 | Model | Input | Test accuracy | Macro-F1 |
 |---|---|---|---|
-| CNN (4 conv blocks, BatchNorm, Dropout) | 48x48 grayscale pixels, all test images | 63.7% | 0.591 |
+| CNN (4 conv blocks, BatchNorm, Dropout) | 48x48 grayscale pixels, all test images | 64.6% | 0.607 |
 | MLP (1404 -> 512 -> 256 -> 128 -> 7) | normalized MediaPipe landmarks, detected faces only (~91.5%) | 56.8% | 0.498 |
+
+CNN: up to 50 epochs with early stopping (best validation macro-F1 at epoch 33), AdamW + ReduceLROnPlateau; the 30-epoch run scored 63.7% / 0.591.
 
 MLP strict accuracy (undetected faces counted as wrong): 52.0%. MLP inference: 0.08 ms/face on CPU (excludes MediaPipe).
 
@@ -47,11 +49,11 @@ Grad-CAM on the CNN's last conv block shows which face regions drive each predic
 ![gradcam](models/gradcam.png)
 
 ## Ensemble ablation (CNN + MLP)
-Averaged class probabilities, `w * CNN + (1 - w) * MLP`, with `w` chosen on the validation set (best w = 0.8).
+Averaged class probabilities, `w * CNN + (1 - w) * MLP`, with `w` chosen on the validation set (best w = 1.0).
 
 | Test subset | CNN | MLP | Ensemble |
 |---|---|---|---|
-| Faces detected by MediaPipe (4926) | 64.7% / F1 0.593 | 56.8% / F1 0.498 | 65.0% / F1 0.595 |
-| All 5384 images (CNN fallback when no face) | 63.7% / F1 0.591 | n/a | 64.0% / F1 0.592 |
+| Faces detected by MediaPipe (4926) | 65.6% / F1 0.608 | 56.8% / F1 0.498 | 65.6% / F1 0.608 |
+| All 5384 images (CNN fallback when no face) | 64.6% / F1 0.607 | n/a | 64.6% / F1 0.607 |
 
-The gain is about 0.3 points, within the noise of a ~5k-image test set, so the ensemble is **not meaningfully better** than the CNN alone. The validation search gave the CNN most of the weight, which suggests the landmark geometry adds little beyond what the CNN already learns. The live demo therefore uses the CNN only.
+Gain on detected faces: +0.0 points. The gain is within the noise of a ~5k-image test set (about +/-0.7 points), so the ensemble is **not meaningfully better** than the CNN alone. The live demo uses the CNN only.
