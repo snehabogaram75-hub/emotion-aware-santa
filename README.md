@@ -2,6 +2,8 @@
 
 Real-time webcam Santa filter that reacts to your facial emotion. The emotion classifiers are **trained from scratch** on FER2013 (not an API call): a custom CNN on face pixels and a landmark-based MLP, compared head to head.
 
+![demo](assets/demo.png)
+
 
 ## How it works
 Webcam -> MediaPipe Face Landmarker (face + 468 landmarks) -> face crop -> **custom CNN** -> temporal smoothing (EMA) -> Santa hat/beard drawn on landmarks + emotion reactions (happy: confetti, surprise: gifts, sad/fear/neutral: snow, angry: naughty list, disgust: coal).

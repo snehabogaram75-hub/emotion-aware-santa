@@ -94,6 +94,7 @@ def step_draw(frame, h):
             cv2.line(frame, (x, y + s // 2), (x + s, y + s // 2), (255,255,255), 2)
     parts[:] = [p for p in parts if p[1] < h + 20][-300:]
 
+AUTO = float(os.environ.get("AUTO_CAPTURE", "0")); t_start = time.time()
 print("Running. q = quit | s = save photo to captures/")
 while True:
     ok, frame = cap.read()
@@ -136,6 +137,10 @@ while True:
     now = time.time(); fps = 0.9 * fps + 0.1 / max(now - t_prev, 1e-6); t_prev = now
     put(frame, f"{fps:.0f} FPS", (w - 110, 30), 0.6, (255,255,0), 2)
     put(frame, "q quit | s save", (10, h - 10), 0.45, (255,255,255), 1)
+    if AUTO and time.time() - t_start >= AUTO:
+        fn = f"captures/santa_{int(time.time())}.png"; cv2.imwrite(fn, frame); print("Saved", fn); break
+    if AUTO:
+        put(frame, f"Smile! {int(AUTO - (time.time() - t_start)) + 1}", (w // 2 - 80, 70), 1.4, (0, 255, 255), 3)
     cv2.imshow("Emotion-Aware Santa", frame)
     k = cv2.waitKey(1) & 0xFF
     if k == ord("q"): break
