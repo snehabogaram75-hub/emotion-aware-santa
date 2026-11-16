@@ -56,4 +56,4 @@ Averaged class probabilities, `w * CNN + (1 - w) * MLP`, with `w` chosen on the 
 | Faces detected by MediaPipe (4926) | 65.6% / F1 0.608 | 56.8% / F1 0.498 | 65.6% / F1 0.608 |
 | All 5384 images (CNN fallback when no face) | 64.6% / F1 0.607 | n/a | 64.6% / F1 0.607 |
 
-Gain on detected faces: +0.0 points. The gain is within the noise of a ~5k-image test set (about +/-0.7 points), so the ensemble is **not meaningfully better** than the CNN alone. The live demo uses the CNN only.
+Gain on detected faces: +0.0 points. The validation search picked w = 1.0, meaning the MLP gets zero weight and the ensemble reduces to the CNN alone (identical test numbers). Landmark geometry adds no information beyond what the CNN already learns. The live demo uses the CNN only.
